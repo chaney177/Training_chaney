@@ -1,0 +1,48 @@
+---
+title: "Mini Literate Analysis"
+format: html
+---
+
+## Introduction
+
+- About our data
+Description and link to data [https://arcticdata.io/catalog/view/doi:10.18739/A25T3FZ8X]
+- Set up
+```{r}
+library(readr)
+library(here)
+```
+
+- Read in data
+
+```{r}
+bg_chem <- read_csv(here::here("data", "BGchem2008data.csv"))
+```
+
+## Analysis
+- Calculate summary statistics
+```{r}
+nitrate<-mean(bg_chem$NO3)
+nitrite<-mean(bg_chem$NO2)
+Amm <-mean(bg_chem$NH4)
+Phos<-mean(bg_chem$P)
+```
+
+- Calculate Ratio
+
+```{r}
+ratio<- (nitrate+nitrite+Amm)/Phos
+```
+
+- Plot Ratio
+
+```{r}
+plot(bg_chem$P, bg_chem$NO3+ bg_chem$NO2 + bg_chem$NH4)
+
+```
+
+
+## Conclusion
+
+The Nitrogen to Phosphorus ratio is `r round(ratio)`.
+

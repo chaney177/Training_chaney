@@ -1,0 +1,37 @@
+---
+title: "Into To Quarto"
+format: html
+bibliography: references.bib
+---
+
+## Header Level 2
+
+#### Header Level 4
+
+**Bold yeehaw**
+
+*italy*
+
+1.  Item 1
+2.  Item 2
+3.  Item 3
+
+[News Time](https://www.msn.com/en-us/news/us/northern-california-student-joins-california-state-board-of-education/vi-BB1nXRQb?ocid=entnewsntp&pc=U531&cvid=53a3732d560f4f93af70dbf22522e4bf&ei=18)
+
+| Animal     | Pop  | Change in Pop |
+|------------|------|---------------|
+| flamingos  | 10   | -2            |
+| centipedes | 3500 | +12           |
+| millipedes | 12   | -100          |
+
+This is a very important fact that needs to be cited. [@oke2020]
+
+## Working with R Code in Quarto 
+```{r}
+x <- 4*8
+
+hights_ft<- c(5.2, 6.0, 5.7)
+
+
+```
+
