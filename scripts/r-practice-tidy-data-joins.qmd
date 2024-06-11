@@ -2,24 +2,156 @@
 title: "R Practice: Tidy Data and Joins"
 format: html
 ---
-
-## Quarto
-
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
-
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
-
+Libraries needed!
 ```{r}
-1 + 1
+library(readr)
+library(dplyr)
+library(lubridate) # for bonus question
+# I am using online links so not needed but just for reference: library(here)
+```
+##Pulling in the data using repo urls
+```{r}
+#message: false
+bird_observations<-read_csv(("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=53edaa7a0e083013d9bf20322db1780e"))
+bird_sites<-read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=81bf72420e69077097fb0790dcdc63a6")
+bird_surveys<-read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=b2466fa5cb5ed7ee1ea91398fc291c59")
+bird_taxalist<-read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=58f863b7e3066e68536a9cacdc7bd58e")
 ```
 
-You can add options to executable code like this 
+##Looking at Bird Observation data- 8.1 and 8.2
+```{r}
+#prints column names
+colnames(bird_observations)
+#unique values in each column
+unique(bird_observations$species_id)
+head(bird_observations)
+
+```
+Foreign Keys= Survey ID, Site ID, Species ID
+No primary keys
+##Looking at Bird Sites data
+```{r}
+#prints column names
+colnames(bird_sites)
+
+head(bird_sites)
+```
+Foreign Key= Site ID
+
+##Looking at Bird Survey data
+```{r}
+#prints column names
+colnames(bird_surveys)
+
+head(bird_surveys)
+```
+Primary Key= Survey ID
+Foriegn Key= Site ID
+
+##Looking at Bird Taxalist data
+```{r}
+#prints column names
+colnames(bird_taxalist)
+
+head(bird_taxalist)
+```
+Primary Key= Species ID
+
+###8.3
+Write code to create a subset of bird_observations called birds_subset that only contains observations for birds with species id BHCO and RWBL, and from sites with site ID LI-W and NU-C.
 
 ```{r}
-#| echo: false
-2 * 2
+birds_subset<- bird_observations %>% filter(species_id=="BHCO"|species_id=="RWBL") %>% filter(site_id=="LI-W"|site_id=="NU-C")
+head(birds_subset)
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+##8.4
+#First, answer: what do you expect the outcome data frame when doing left_join() between birds_subset and sites to look like? What observations do you expect in the outcome data frame.
+
+I expect the outcome data frame to have a lot of NAs in park district, point code, point location, and park acreage because these areas are pretty bare in bird_site dataset.There will be less species because we are only tracking two now and the site information will also be limited to two sites.
+
+#Use a left join to update birds_subset so that it also includes sites information. For each join, include an explicit argument saying which key you are joining by (even if it will just assume the correct one for you). Store the updated data frame as birds_left. Make sure to look at the output - is what it contains consistent with what you expected it to contain?
+
+```{r}
+birds_left<- left_join(birds_subset,bird_sites, by="site_id")
+head(birds_left)
+```
+
+##8.5
+#what do you expect a full_join() between birds_subset and sites to contain? 
+ok this one will contain all the NAs I was talking about in previous answer. 
+
+```{r}
+birds_full<-full_join(birds_subset,bird_sites,by="site_id")
+head(birds_full)
+```
+
+##8.6
+#what do you expect an inner_join() between birds_subset and taxalist to contain?
+No NAs here I am pretty sure. This one will have the names of the birds yay! what are BHCO and RWBL red winged black bird and brown headed cowbird.
+
+```{r}
+birds_innercircle<-inner_join(birds_subset,bird_taxalist,by="species_id")
+head(birds_innercircle)
+```
+
+```{r}
+birds_leftcircle<-left_join(birds_subset,bird_taxalist,by="species_id")
+head(birds_leftcircle)
+```
+idk these look the same to me sorry
+
+##8.7 IT's Wrangling Time Sister
+
+```{r}
+bird_observations<-bird_observations %>% rename(bird_obs_notes=notes)
+
+head(bird_observations)
+```
+#Combine time
+```{r}
+combining2<- left_join(bird_observations,bird_sites,by="site_id")
+combining3<-left_join(combining2,bird_surveys,by="survey_id")
+combiningitALL<-left_join(combining3,bird_taxalist,by="species_id")
+head(combiningitALL)
+```
+#Cutting it downnn
+```{r}
+Cuttingitdown<-combiningitALL %>% select(survey_date,common_name,park_name,bird_count,observer)
+head(Cuttingitdown)
+```
+
+##8.8
+
+```{r}
+unique(Cuttingitdown$observer)
+```
+6
+
+```{r}
+Cuttingitdown<- Cuttingitdown %>% mutate(observer=if_else(condition= observer == "Josh Burns", true= "J. Burns", false= observer))
+
+unique(Cuttingitdown$observer)
+```
+
+
+##Cleaning Bird Observation data
+```{r}
+
+```
+
+##Cleaning Bird Sites data
+```{r}
+
+```
+
+##Cleaning Bird Survey data
+```{r}
+
+```
+
+##Cleaning Bird Taxalist data
+```{r}
+
+```
