@@ -3,4 +3,14 @@ title: "GitHub Pages Example"
 format: html
 ---
 
-Hello world!
+## Course Lessons
+
+- [Introduction to Literate Analysis Using Quarto](scripts/Literate-Analysis.html) 
+- [Cleaning and Wrangling data](scripts/Data Wrangling.html)
+- Data Visualization
+- Working with Spatial Data
+
+## Course Practice Session
+
+- Practice I: Cleaning and Wrnagling and Data Viz
+- Practice II: Lobster Report
