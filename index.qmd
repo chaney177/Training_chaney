@@ -7,10 +7,10 @@ format: html
 
 - [Introduction to Literate Analysis Using Quarto](scripts/Literate-Analysis.html) 
 - [Cleaning and Wrangling data](scripts/Data Wrangling.html)
-- Data Visualization
-- Working with Spatial Data
+- [Data Visualization](scripts/Data_Viz.html)
+- [Working with Spatial Data](scripts/Spatial-data.html)
 
 ## Course Practice Session
 
-- Practice I: Cleaning and Wrnagling and Data Viz
+- Practice I: [Cleaning and Wrangling](r-practice-tidy-data-joins.html) and Data Viz
 - Practice II: Lobster Report
